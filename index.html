@@ -33,11 +33,29 @@ nav i{font-style:normal;font-size:20px}nav .on{background:var(--m);color:var(--p
 textarea{min-height:110px}label{display:block;font-size:13px;color:var(--sg);margin-top:6px}
 @media(min-width:900px){body{padding:0 0 0 230px}nav{top:0;bottom:auto;right:auto;width:230px;flex-direction:column;overflow:auto;padding:20px 12px;border:0;border-right:1px solid var(--b);box-shadow:none}
 nav button{flex-direction:row;gap:12px;font-size:15px;width:100%;padding:11px 14px;justify-content:flex-start}.modal{align-items:center}.modal>div{border-radius:24px}}
+
+nav[hidden]{display:none!important}
+:root{--bg:#e6f4ec}
+@media(prefers-color-scheme:dark){:root{--bg:#0b1812}}
+body{background:var(--bg)}
+nav{background:linear-gradient(180deg,#047857,#065f46);border:0;color:#fff;box-shadow:0 -4px 16px #0003}
+nav button{color:#d1fae5}nav .on{background:#ffffff26;color:#fff}
+.brand{display:none}
+.hero{background:linear-gradient(135deg,#059669,#064e3b);border-radius:24px;padding:22px}
+.hero h2{font-size:26px}
+@media(min-width:900px){
+ nav{padding:22px 14px;box-shadow:4px 0 20px #04785722}
+ nav::before{content:"🎓 Campus Tracker";display:block;color:#fff;font-weight:700;font-size:18px;padding:4px 12px 18px}
+ nav button:hover{background:#ffffff1a}
+ main{max-width:860px;padding:26px}
+}
 </style></head><body>
 <main id="app"></main><nav id="nav" hidden></nav><div id="mod"></div>
 <script src="config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>
+const showErr=m=>{document.getElementById('app').innerHTML='<div class=card><h3>⚠ Aplikasi gagal dimuat</h3><p>'+String(m).replace(/</g,'&lt;')+'</p><small>Cek file config.js: SB_URL dan SB_KEY harus terisi, dan file config.js harus ada di GitHub.</small></div>'};
+addEventListener('error',e=>showErr(e.message));addEventListener('unhandledrejection',e=>showErr(e.reason?.message||e.reason));
 const sb=supabase.createClient(SB_URL,SB_KEY);
 const $=s=>document.querySelector(s), D=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
 const BW={A:4,'A-':3.7,'B+':3.3,B:3,'B-':2.7,'C+':2.3,C:2,D:1,E:0};
