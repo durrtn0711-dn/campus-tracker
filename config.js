@@ -1,0 +1,2 @@
+const SB_URL="https://rnvnohlnqbzfspvmxbhl.supabase.co";
+const SB_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJudm5vaGxucWJ6ZnNwdm14YmhsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTU1NzI4NDQsImV4cCI6MjExMTE0ODg0NH0.UFbgsE3FSAD98venGRJ4VYZXk4Vi57by-fTnRyVQXmQ";
