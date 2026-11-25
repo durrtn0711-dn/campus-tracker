@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#059669">
+<link rel="manifest" href="manifest.json">
+<title>Campus Tracker</title>
+<style>
+:root{--p:#059669;--bg:#f7faf8;--s:#fff;--t:#1f2937;--m:#d1fae5;--b:#e5e7eb;--sg:#6b8f71}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1713;--s:#18231d;--t:#e5efe9;--m:#14392b;--b:#2a3a31}}
+*{box-sizing:border-box}body{margin:0;font:15px system-ui,sans-serif;background:var(--bg);color:var(--t);padding-bottom:70px}
+main{max-width:720px;margin:auto;padding:14px}
+.card{background:var(--s);border:1px solid var(--b);border-radius:16px;padding:12px;margin:0 0 10px}
+h2{margin:6px 0 12px}h3{margin:0 0 6px}small,.sub{color:var(--sg);font-size:13px}
+button,input,select,textarea{font:inherit;color:inherit;border-radius:12px;border:1px solid var(--b);background:var(--s);padding:10px;width:100%;margin:4px 0}
+button{width:auto;min-height:42px;cursor:pointer}.pri{background:var(--p);color:#fff;border:0}
+.row{display:flex;gap:8px;align-items:center;justify-content:space-between}
+.chip{background:var(--m);border-radius:99px;padding:2px 10px;font-size:12px}
+.red{color:#dc2626}
+nav{position:fixed;bottom:0;left:0;right:0;background:var(--s);border-top:1px solid var(--b);display:flex;overflow-x:auto;padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
+nav button{border:0;background:none;white-space:nowrap;padding:8px 12px}nav .on{background:var(--m);color:var(--p);font-weight:600}
+.modal{position:fixed;inset:0;background:#0008;display:flex;align-items:flex-end;z-index:9}
+.modal>div{background:var(--bg);width:100%;max-height:90vh;overflow:auto;padding:16px;border-radius:20px 20px 0 0}
+textarea{min-height:110px}
+</style></head><body>
+<main id="app"></main><nav id="nav" hidden></nav><div id="mod"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+/* ====== ISI 2 BARIS INI DARI SUPABASE > Project Settings > API ====== */
+const SB_URL="ISI_URL_SUPABASE", SB_KEY="ISI_ANON_PUBLIC_KEY";
+/* ==================================================================== */
+const sb=supabase.createClient(SB_URL,SB_KEY);
+const $=s=>document.querySelector(s), D=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+const BW={A:4,'A-':3.7,'B+':3.3,B:3,'B-':2.7,'C+':2.3,C:2,D:1,E:0};
+const ST=['Belum','Proses','Selesai'], PR=['Rendah','Sedang','Tinggi'];
+const MIN=+localStorage.minAbs||75; // batas minimum kehadiran (%)
+const fd=v=>v?new Date(v).toLocaleString('id-ID',{timeZone:'Asia/Jakarta',dateStyle:'medium',timeStyle:'short'}):'-';
+const rp=n=>'Rp '+Math.round(n).toLocaleString('id-ID');
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const M={
+courses:{t:'Jadwal Makul',f:[['name','Nama makul'],['code','Kode'],['lecturer','Dosen'],['day','Hari','sel',D],['start_time','Mulai','time'],['end_time','Selesai','time'],['room','Ruangan'],['semester','Semester','number'],['sks','SKS','number'],['note','Catatan','area']],h:r=>r.name,s:r=>`${r.day||''} ${r.start_time||''}-${r.end_time||''} · ${r.room||''} · ${r.lecturer||''}`,sort:(a,b)=>D.indexOf(a.day)-D.indexOf(b.day)||(a.start_time||'').localeCompare(b.start_time||'')},
+tasks:{t:'My Task',f:[['title','Nama tugas'],['course','Mata kuliah'],['description','Deskripsi','area'],['deadline','Deadline','dt'],['priority','Prioritas','sel',PR],['status','Status','sel',ST],['note','Catatan','area']],h:r=>r.title,s:r=>`${r.course||''} · ${fd(r.deadline)} · ${r.priority}`,done:1,q:1,sort:(a,b)=>(a.deadline||'9').localeCompare(b.deadline||'9')},
+deadlines:{t:'Deadline',f:[['title','Nama'],['category','Kategori','sel',['Tugas','Pembayaran','UKT/SPP','KRS','Registrasi','Ujian','Administrasi','Lainnya']],['due','Tanggal & jam','dt'],['priority','Prioritas','sel',PR],['status','Status','sel',ST],['note','Deskripsi','area']],h:r=>r.title,s:r=>`${r.category} · ${fd(r.due)}`,done:1,sort:(a,b)=>a.due.localeCompare(b.due)},
+grades:{t:'Academic Progress',f:[['course_name','Mata kuliah'],['code','Kode'],['semester','Semester','number'],['sks','SKS','number'],['score','Nilai angka (opsional)','number'],['letter','Nilai huruf (kosong = belum ada)','sel',['',...Object.keys(BW)]]],h:r=>r.course_name,s:r=>`Smt ${r.semester} · ${r.sks} SKS · ${r.letter||'⚠ belum ada nilai'}`,sort:(a,b)=>a.semester-b.semester},
+attendance:{t:'Attendance',f:[['course','Mata kuliah'],['date','Tanggal','date'],['status','Status','sel',['Hadir','Izin','Sakit','Alpa','Libur']],['note','Catatan pertemuan']],h:r=>r.course,s:r=>`${r.date} · ${r.status} ${r.note?'· '+r.note:''}`,sort:(a,b)=>b.date.localeCompare(a.date)},
+transactions:{t:'Academic Finance',f:[['type','Jenis','sel',['Keluar','Masuk']],['category','Kategori','sel',['UKT/SPP','Registrasi','Praktikum','Buku & materi','Transportasi','Peralatan','Lainnya']],['amount','Nominal','number'],['date','Tanggal','date'],['note','Catatan']],h:r=>`${r.type==='Masuk'?'+':'-'} ${rp(r.amount)}`,s:r=>`${r.category} · ${r.date} · ${r.note||''}`,sort:(a,b)=>b.date.localeCompare(a.date)}
+};
+const NAV=[['dash','Dashboard'],...Object.keys(M).map(k=>[k,M[k].t]),['set','Setting']];
+let cache={}, page='dash', user;
+const load=async k=>{const{data,error}=await sb.from(k).select('*');if(error)alert(error.message);return cache[k]=(data||[]).sort(M[k]?.sort||(()=>0))};
+
+/* ---------- AUTH ---------- */
+async function boot(){
+ const{data}=await sb.auth.getSession(); user=data.session?.user;
+ if(!user){$('#nav').hidden=true;$('#app').innerHTML=`<h2>🎓 Campus Tracker</h2><div class=card><input id=em type=email placeholder=Email><input id=pw type=password placeholder="Password (min 6)"><div class=row><button class=pri onclick=auth(1)>Masuk</button><button onclick=auth(0)>Daftar</button></div></div>`;return}
+ $('#nav').hidden=false;render();
+}
+async function auth(login){
+ const c={email:$('#em').value,password:$('#pw').value};
+ const{error}=await(login?sb.auth.signInWithPassword(c):sb.auth.signUp(c));
+ if(error)return alert(error.message);boot();
+}
+async function logout(){await sb.auth.signOut();boot()}
+
+/* ---------- RENDER ---------- */
+async function render(){
+ $('#nav').innerHTML=NAV.map(([k,l])=>`<button class="${k==page?'on':''}" onclick="go('${k}')">${l}</button>`).join('');
+ const a=$('#app');a.innerHTML='Memuat…';
+ if(page=='dash')return dash(a);
+ if(page=='set')return a.innerHTML=`<h2>Setting</h2><div class=card><p>${esc(user.email)}</p><label>Batas minimum kehadiran (%)<input type=number value=${MIN} onchange="localStorage.minAbs=this.value"></label><button onclick=backup()>⬇ Backup data (JSON)</button> <button onclick=logout()>Logout</button></div>`;
+ const m=M[page],rows=await load(page);let top='';
+ if(page=='grades')top=gradeSum(rows); if(page=='attendance')top=absSum(rows); if(page=='transactions')top=finSum(rows);
+ a.innerHTML=`<div class=row><h2>${m.t}</h2><button class=pri onclick="edit()">+ Tambah</button></div>${top}${m.q?'<input placeholder="Cari…" oninput="filt(this.value)">':''}<div id=list>${list(rows)}</div>`;
+}
+const go=k=>{page=k;render()};
+const stat=r=>{const d=r.due||r.deadline;if(r.status=='Selesai')return'Completed';if(!d)return'';const t=new Date(d),n=new Date();return t<n?'Overdue':t.toDateString()==n.toDateString()?'Due Today':'Upcoming'};
+function list(rows){const m=M[page];return rows.map(r=>{const s=m.done?stat(r):'';return`<div class=card><div class=row><div><h3>${esc(m.h(r))}</h3><div class=sub>${esc(m.s(r))}</div></div>${s?`<span class="chip ${s=='Overdue'?'red':''}">${s}</span>`:''}</div><div class=row style="justify-content:flex-start">${m.done?`<button onclick="tog('${r.id}')">${r.status=='Selesai'?'↩ Buka':'✓ Selesai'}</button>`:''}<button onclick="edit('${r.id}')">Edit</button><button onclick="del('${r.id}')">Hapus</button></div></div>`}).join('')||'<p class=sub>Belum ada data.</p>'}
+const filt=q=>{$('#list').innerHTML=list(cache[page].filter(r=>JSON.stringify(r).toLowerCase().includes(q.toLowerCase())))};
+async function tog(id){const r=cache[page].find(x=>x.id==id);await sb.from(page).update({status:r.status=='Selesai'?'Belum':'Selesai'}).eq('id',id);render()}
+async function del(id){if(confirm('Hapus data ini?')){await sb.from(page).delete().eq('id',id);render()}}
+
+/* ---------- FORM ---------- */
+const loc=v=>v?new Date(new Date(v)-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,16):'';
+function edit(id){
+ const m=M[page],r=id?cache[page].find(x=>x.id==id):{};
+ $('#mod').innerHTML=`<div class=modal><div><h3>${id?'Edit':'Tambah'} ${m.t}</h3>${m.f.map(([k,l,t,o],i)=>{const v=r[k]??'';return`<label>${l}${t=='sel'?`<select id=f${i}>${o.map(x=>`<option ${x==v?'selected':''}>${x}</option>`).join('')}</select>`:t=='area'?`<textarea id=f${i}>${esc(v)}</textarea>`:`<input id=f${i} type="${t=='dt'?'datetime-local':t||'text'}" value="${esc(t=='dt'?loc(v):v)}">`}</label>`}).join('')}<div class=row><button class=pri onclick="save('${id||''}')">Simpan</button><button onclick="$('#mod').innerHTML=''">Batal</button></div></div></div>`;
+}
+async function save(id){
+ const o={};M[page].f.forEach(([k,,t],i)=>{let v=$('#f'+i).value;o[k]=v===''?null:t=='dt'?new Date(v).toISOString():t=='number'?+v:v});
+ const{error}=await(id?sb.from(page).update(o).eq('id',id):sb.from(page).insert(o));
+ if(error)return alert(error.message);$('#mod').innerHTML='';render();
+}
+
+/* ---------- RINGKASAN ---------- */
+function ipk(rows){ // hanya nilai yang sudah ada huruf-nya
+ const g=rows.filter(r=>r.letter),by={};let q=0,s=0;
+ g.forEach(r=>{const w=BW[r.letter]*r.sks;(by[r.semester]??=[0,0]);by[r.semester][0]+=w;by[r.semester][1]+=r.sks;q+=w;s+=r.sks});
+ return{ipk:s?q/s:null,sks:s,by,miss:rows.length-g.length}
+}
+function gradeSum(rows){const x=ipk(rows);return`<div class=card><b>IPK: ${x.ipk?.toFixed(2)??'-'}</b> · SKS lulus: ${x.sks}${x.miss?` · <span class=red>⚠ ${x.miss} makul belum bernilai (tidak dihitung)</span>`:''}<br>${Object.entries(x.by).map(([k,v])=>`<span class=chip>Smt ${k}: IPS ${(v[0]/v[1]).toFixed(2)}</span>`).join(' ')}</div>`}
+function absCalc(rows){const by={};rows.forEach(r=>{const c=by[r.course]??={h:0,t:0};if(r.status=='Libur')return;c.t++;if(r.status=='Hadir')c.h++});return by}
+function absSum(rows){const by=absCalc(rows);return`<div class=card>${Object.entries(by).map(([k,v])=>{const p=v.h/v.t*100;return`<div class=row><span>${esc(k)}</span><span class="${p<MIN+5?'red':''}">${p.toFixed(0)}% (${v.h}/${v.t})${p<MIN+5?' ⚠':''}</span></div>`}).join('')||'Belum ada data'}<small>Libur/dibatalkan tidak dihitung. Batas minimum ${MIN}%.</small></div>`}
+function finSum(rows){const i=rows.filter(r=>r.type=='Masuk').reduce((a,r)=>a+r.amount,0),o=rows.filter(r=>r.type=='Keluar').reduce((a,r)=>a+r.amount,0);return`<div class=card>Masuk ${rp(i)} · Keluar ${rp(o)}<br><b>Saldo ${rp(i-o)}</b></div>`}
+
+/* ---------- DASHBOARD + MEMO ---------- */
+async function dash(a){
+ const[c,t,d,g,at,tr,mm]=await Promise.all([...['courses','tasks','deadlines','grades','attendance','transactions'].map(load),sb.from('memos').select('*').order('updated_at',{ascending:false})]);
+ let memo=mm.data?.[0];if(!memo){memo=(await sb.from('memos').insert({content:''}).select().single()).data}
+ const h=new Date().getHours(),hari=D[new Date().getDay()],ab=Object.values(absCalc(at)),ah=ab.reduce((x,v)=>x+v.h,0),atot=ab.reduce((x,v)=>x+v.t,0);
+ const today=c.filter(x=>x.day==hari),open=t.filter(x=>x.status!='Selesai'),near=d.filter(x=>x.status!='Selesai').slice(0,4);
+ a.innerHTML=`<h2>${h<11?'Selamat pagi':h<15?'Selamat siang':h<18?'Selamat sore':'Selamat malam'} 👋</h2><small>${new Date().toLocaleDateString('id-ID',{dateStyle:'full',timeZone:'Asia/Jakarta'})}</small>
+ <div class=card><h3>Kuliah hari ini</h3>${today.map(x=>`<div>${x.start_time} ${esc(x.name)} <small>${esc(x.room||'')}</small></div>`).join('')||'<small>Tidak ada kelas 🎉</small>'}</div>
+ <div class=card><h3>Tugas belum selesai: ${open.length}</h3>${open.slice(0,3).map(x=>`<div>${esc(x.title)} <small>${fd(x.deadline)}</small></div>`).join('')}</div>
+ <div class=card><h3>Deadline terdekat</h3>${near.map(x=>`<div>${esc(x.title)} <small>${fd(x.due)} · ${stat(x)}</small></div>`).join('')||'<small>Kosong</small>'}</div>
+ <div class=card><div class=row><span>IPK <b>${ipk(g).ipk?.toFixed(2)??'-'}</b></span><span>Hadir <b>${atot?(ah/atot*100).toFixed(0)+'%':'-'}</b></span></div><small>${rp(tr.filter(x=>x.type=='Masuk').reduce((s,x)=>s+x.amount,0)-tr.filter(x=>x.type=='Keluar').reduce((s,x)=>s+x.amount,0))} saldo pendidikan</small></div>
+ <div class=card><h3>📝 Memo <small id=ms>tersimpan ${fd(memo.updated_at)}</small></h3><textarea id=memo oninput="memoSave('${memo.id}')">${esc(memo.content)}</textarea></div>`;
+}
+let mt;function memoSave(id){$('#ms').textContent='menyimpan…';clearTimeout(mt);mt=setTimeout(async()=>{const u=new Date().toISOString();await sb.from('memos').update({content:$('#memo').value,updated_at:u}).eq('id',id);$('#ms').textContent='tersimpan '+fd(u)},700)}
+
+async function backup(){const o={};for(const k of Object.keys(M))o[k]=await load(k);const b=new Blob([JSON.stringify(o,null,1)],{type:'application/json'}),l=document.createElement('a');l.href=URL.createObjectURL(b);l.download='campus-tracker-backup.json';l.click()}
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');
+boot();
+</script></body></html>
