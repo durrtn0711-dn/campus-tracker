@@ -2,151 +2,182 @@
 <html lang="id"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#059669">
+<meta name="theme-color" content="#1e3d59">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <title>Campus Tracker</title>
 <style>
-:root{--p:#059669;--p2:#047857;--bg:#f3f8f5;--s:#fff;--t:#1f2937;--m:#d1fae5;--b:#e3ece7;--sg:#6b8f71;--sh:0 2px 10px #05966914}
-@media(prefers-color-scheme:dark){:root{--bg:#0e1612;--s:#17221c;--t:#e5efe9;--m:#14392b;--b:#27382e;--sh:none}}
-*{box-sizing:border-box}body{margin:0;font:15px/1.45 system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--t);padding-bottom:84px}
-main{max-width:760px;margin:auto;padding:14px}
-.hero{background:linear-gradient(135deg,#10b981,#047857);color:#fff;border-radius:22px;padding:20px;margin-bottom:12px;box-shadow:0 8px 20px #04785733}
-.hero h2{margin:0 0 4px;font-size:24px}.hero small{color:#d1fae5}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
-.tile{background:var(--s);border:1px solid var(--b);border-radius:18px;padding:14px;box-shadow:var(--sh)}
-.tile b{display:block;font-size:24px;color:var(--p)}.tile small{display:block}
-.card{background:var(--s);border:1px solid var(--b);border-radius:18px;padding:14px;margin:0 0 10px;box-shadow:var(--sh)}
-h2{margin:6px 0 12px}h3{margin:0 0 6px;font-size:16px}small,.sub{color:var(--sg);font-size:13px}
-button,input,select,textarea{font:inherit;color:inherit;border-radius:12px;border:1px solid var(--b);background:var(--s);padding:11px;width:100%;margin:4px 0}
-button{width:auto;min-height:44px;cursor:pointer;transition:.15s}button:active{transform:scale(.97)}
-.pri{background:var(--p);color:#fff;border:0;font-weight:600;border-radius:99px;padding:10px 18px}
-.row{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap}
-.chip{background:var(--m);color:var(--p2);border-radius:99px;padding:3px 11px;font-size:12px;font-weight:600}
-.red{color:#dc2626}.chip.red{background:#fee2e2}
-nav{position:fixed;bottom:0;left:0;right:0;background:var(--s);border-top:1px solid var(--b);display:flex;overflow-x:auto;padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:5;box-shadow:0 -4px 14px #0001}
-nav button{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:68px;padding:6px 4px;font-size:11px;white-space:nowrap;margin:0;border-radius:14px}
-nav i{font-style:normal;font-size:20px}nav .on{background:var(--m);color:var(--p2);font-weight:700}
-.modal{position:fixed;inset:0;background:#0007;display:flex;align-items:flex-end;justify-content:center;z-index:9}
-.modal>div{background:var(--bg);width:100%;max-width:560px;max-height:90vh;overflow:auto;padding:18px;border-radius:24px 24px 0 0}
-textarea{min-height:110px}label{display:block;font-size:13px;color:var(--sg);margin-top:6px}
-@media(min-width:900px){body{padding:0 0 0 230px}nav{top:0;bottom:auto;right:auto;width:230px;flex-direction:column;overflow:auto;padding:20px 12px;border:0;border-right:1px solid var(--b);box-shadow:none}
-nav button{flex-direction:row;gap:12px;font-size:15px;width:100%;padding:11px 14px;justify-content:flex-start}.modal{align-items:center}.modal>div{border-radius:24px}}
-
+:root{--n:#1e3d59;--c:#f5f0e1;--o:#ff6e40;--y:#ffc13b;--s:#fff;--b:#e6dec8;--m:#6b7c8d}
+*{box-sizing:border-box}body{margin:0;font:15px/1.45 system-ui,-apple-system,sans-serif;background:var(--c);color:var(--n);padding-bottom:78px}
+main{max-width:920px;margin:auto;padding:16px}
+nav{position:fixed;z-index:5;left:0;right:0;bottom:0;background:var(--n);display:flex;overflow-x:auto;padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
 nav[hidden]{display:none!important}
-:root{--bg:#e6f4ec}
-@media(prefers-color-scheme:dark){:root{--bg:#0b1812}}
-body{background:var(--bg)}
-nav{background:linear-gradient(180deg,#047857,#065f46);border:0;color:#fff;box-shadow:0 -4px 16px #0003}
-nav button{color:#d1fae5}nav .on{background:#ffffff26;color:#fff}
-.brand{display:none}
-.hero{background:linear-gradient(135deg,#059669,#064e3b);border-radius:24px;padding:22px}
-.hero h2{font-size:26px}
-@media(min-width:900px){
- nav{padding:22px 14px;box-shadow:4px 0 20px #04785722}
- nav::before{content:"🎓 Campus Tracker";display:block;color:#fff;font-weight:700;font-size:18px;padding:4px 12px 18px}
- nav button:hover{background:#ffffff1a}
- main{max-width:860px;padding:26px}
-}
+nav button{border:0;background:none;color:#b9c7d6;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:70px;padding:7px 4px;font-size:10.5px;white-space:nowrap;border-radius:12px;margin:0}
+nav .on{background:#ffffff1c;color:var(--y);font-weight:700}
+.card{background:var(--s);border-radius:18px;padding:14px;margin:0 0 12px;box-shadow:0 1px 3px #1e3d5914}
+h2{margin:4px 0 14px;font-size:24px}h3{margin:0 0 6px;font-size:16px}small,.sub{color:var(--m);font-size:13px}
+button,input,select,textarea{font:inherit;color:inherit;border-radius:12px;border:1.5px solid var(--b);background:#fff;padding:10px;width:100%;margin:4px 0}
+button{width:auto;min-height:42px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;justify-content:center}
+.pri{background:var(--o);color:#fff;border:0;font-weight:600;border-radius:99px;padding:9px 18px}
+.ic{padding:8px;min-height:38px;border-radius:10px}
+.row{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.chip{background:#fff3d1;color:#8a5a00;border-radius:99px;padding:3px 11px;font-size:12px;font-weight:600}
+.red{color:#d33}.chip.red{background:#ffe0d6;color:#c2410c}
+.hero{background:linear-gradient(135deg,#1e3d59,#2b5a82);color:#fff;border-radius:24px;padding:22px;margin-bottom:12px;border-bottom:5px solid var(--o)}
+.hero h2{margin:0 0 4px;font-size:26px}.hero small{color:#c9d6e3}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.tile{background:#fff;border-radius:18px;padding:14px;border-left:5px solid var(--y)}.tile:nth-child(2){border-color:var(--o)}.tile:nth-child(3){border-color:var(--n)}
+.tile b{display:block;font-size:24px}
+.tabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:12px}.tabs button{flex:1;min-width:58px;flex-direction:column;gap:0;margin:0;border-radius:14px}
+.tabs .on{background:var(--n);color:#fff;border-color:var(--n)}
+.cls{border-left:6px solid;display:flex;gap:12px}.cls .t{font-weight:700;min-width:54px}
+.notes{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px}
+.note{border-radius:16px;padding:10px}.note textarea{background:transparent;border:0;min-height:100px;resize:none;margin:0;padding:4px}
+.dot{width:20px;height:20px;border-radius:50%;display:inline-block;margin-right:6px;border:2px solid #fff;cursor:pointer;box-shadow:0 0 0 1px #0002}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
+.cal b{font-size:12px;color:var(--m)}.cell{aspect-ratio:1;flex-direction:column;gap:2px;padding:2px;margin:0;border-radius:12px;min-height:0}
+.cell.sel{background:var(--n);color:#fff}.cell.today{border-color:var(--o)}.dots i{display:inline-block;width:6px;height:6px;border-radius:50%;margin:0 1px}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px}td,th{padding:8px 6px;border-bottom:1px solid var(--b);text-align:left;white-space:nowrap}th{color:var(--m);font-size:12px}
+td select{padding:6px;margin:0;width:70px}
+.modal{position:fixed;inset:0;background:#0008;display:flex;align-items:flex-end;justify-content:center;z-index:9}
+.modal>div{background:var(--c);width:100%;max-width:560px;max-height:90vh;overflow:auto;padding:18px;border-radius:24px 24px 0 0}
+textarea{min-height:90px}label{display:block;font-size:13px;color:var(--m);margin-top:6px}
+@media(min-width:900px){body{padding:0 0 0 250px}
+ nav{top:0;right:auto;width:250px;flex-direction:column;overflow:auto;padding:24px 14px}
+ nav::before{content:"Campus Tracker";color:#fff;font-weight:800;font-size:19px;padding:2px 12px 20px;border-bottom:3px solid var(--o);margin-bottom:14px}
+ nav button{flex-direction:row;font-size:14.5px;gap:12px;padding:12px 14px;min-width:0;justify-content:flex-start}
+ .modal{align-items:center}.modal>div{border-radius:24px}main{padding:28px}}
 </style></head><body>
 <main id="app"></main><nav id="nav" hidden></nav><div id="mod"></div>
 <script src="config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>
-const showErr=m=>{document.getElementById('app').innerHTML='<div class=card><h3>⚠ Aplikasi gagal dimuat</h3><p>'+String(m).replace(/</g,'&lt;')+'</p><small>Cek file config.js: SB_URL dan SB_KEY harus terisi, dan file config.js harus ada di GitHub.</small></div>'};
+const showErr=m=>{document.getElementById('app').innerHTML='<div class=card><h3>⚠ Aplikasi gagal dimuat</h3><p>'+String(m).replace(/</g,'&lt;')+'</p><small>Cek config.js dan pastikan update1.sql sudah dijalankan.</small></div>'};
 addEventListener('error',e=>showErr(e.message));addEventListener('unhandledrejection',e=>showErr(e.reason?.message||e.reason));
 const sb=supabase.createClient(SB_URL,SB_KEY);
-const $=s=>document.querySelector(s), D=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
-const BW={A:4,'A-':3.7,'B+':3.3,B:3,'B-':2.7,'C+':2.3,C:2,D:1,E:0};
-const ST=['Belum','Proses','Selesai'], PR=['Rendah','Sedang','Tinggi'];
-const MIN=+localStorage.minAbs||75; // batas minimum kehadiran (%)
+const $=s=>document.querySelector(s),p2=n=>String(n).padStart(2,'0');
+const key=d=>{d=new Date(d);return d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate())};
+const D=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'],DS=['Min','Sen','Sel','Rab','Kam','Jum','Sab'];
+const COL=['#1e3d59','#ff6e40','#d99a00','#2a9d8f','#8e6bbf','#d6457a'],MC=['#fff0b8','#ffd9cc','#d6e6f5','#d8f0e0','#e8dcf5'];
+const col=s=>COL[[...String(s)].reduce((a,c)=>a+c.charCodeAt(0),0)%COL.length];
+const BW={A:4,'A-':3.7,'B+':3.3,B:3,'B-':2.7,'C+':2.3,C:2,D:1,E:0},ST=['Belum','Proses','Selesai'],PR=['Rendah','Sedang','Tinggi'];
+const MIN=+localStorage.minAbs||75;
 const fd=v=>v?new Date(v).toLocaleString('id-ID',{timeZone:'Asia/Jakarta',dateStyle:'medium',timeStyle:'short'}):'-';
-const rp=n=>'Rp '+Math.round(n).toLocaleString('id-ID');
+const rp=n=>'Rp '+Math.round(n||0).toLocaleString('id-ID');
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const P={home:'<path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/>',book:'<path d="M4 5a2 2 0 012-2h13v16H6a2 2 0 00-2 2z"/><path d="M4 19V5"/>',task:'<path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 01-2 2H6a2 2 0 01-2-2V7a2 2 0 012-2h9"/>',cal:'<rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/>',flag:'<path d="M5 21V4M5 4h12l-2 4 2 4H5"/>',cap:'<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/>',user:'<circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-6 7-6s7 2 7 6M16 11l2 2 4-4"/>',rec:'<path d="M5 3h14v18l-3-2-2 2-2-2-2 2-2-2-3 2z"/><path d="M9 8h6M9 12h6"/>',cog:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>',plus:'<path d="M12 5v14M5 12h14"/>',edit:'<path d="M4 20h4L19 9l-4-4L4 16z"/>',trash:'<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>',clip:'<path d="M21 11l-9 9a5 5 0 01-7-7l9-9a3 3 0 014 4l-9 9a1 1 0 01-2-2l8-8"/>',chk:'<path d="M5 12l5 5 9-10"/>',l:'<path d="M15 6l-6 6 6 6"/>',r:'<path d="M9 6l6 6-6 6"/>'};
+const I=(n,z=20)=>`<svg viewBox="0 0 24 24" width=${z} height=${z} fill=none stroke=currentColor stroke-width=1.8 stroke-linecap=round stroke-linejoin=round>${P[n]}</svg>`;
 const M={
-courses:{t:'Jadwal Makul',f:[['name','Nama makul'],['code','Kode'],['lecturer','Dosen'],['day','Hari','sel',D],['start_time','Mulai','time'],['end_time','Selesai','time'],['room','Ruangan'],['semester','Semester','number'],['sks','SKS','number'],['note','Catatan','area']],h:r=>r.name,s:r=>`${r.day||''} ${r.start_time||''}-${r.end_time||''} · ${r.room||''} · ${r.lecturer||''}`,sort:(a,b)=>D.indexOf(a.day)-D.indexOf(b.day)||(a.start_time||'').localeCompare(b.start_time||'')},
 tasks:{t:'My Task',f:[['title','Nama tugas'],['course','Mata kuliah'],['description','Deskripsi','area'],['deadline','Deadline','dt'],['priority','Prioritas','sel',PR],['status','Status','sel',ST],['note','Catatan','area']],h:r=>r.title,s:r=>`${r.course||''} · ${fd(r.deadline)} · ${r.priority}`,done:1,q:1,sort:(a,b)=>(a.deadline||'9').localeCompare(b.deadline||'9')},
-deadlines:{t:'Deadline',f:[['title','Nama'],['category','Kategori','sel',['Tugas','Pembayaran','UKT/SPP','KRS','Registrasi','Ujian','Administrasi','Lainnya']],['due','Tanggal & jam','dt'],['priority','Prioritas','sel',PR],['status','Status','sel',ST],['note','Deskripsi','area']],h:r=>r.title,s:r=>`${r.category} · ${fd(r.due)}`,done:1,sort:(a,b)=>a.due.localeCompare(b.due)},
-grades:{t:'Academic Progress',f:[['course_name','Mata kuliah'],['code','Kode'],['semester','Semester','number'],['sks','SKS','number'],['score','Nilai angka (opsional)','number'],['letter','Nilai huruf (kosong = belum ada)','sel',['',...Object.keys(BW)]]],h:r=>r.course_name,s:r=>`Smt ${r.semester} · ${r.sks} SKS · ${r.letter||'⚠ belum ada nilai'}`,sort:(a,b)=>a.semester-b.semester},
+deadlines:{t:'Deadline',f:[['title','Nama'],['category','Kategori','sel',['Tugas','Pembayaran','UKT/SPP','KRS','Registrasi','Ujian','Administrasi','Agenda','Lainnya']],['due','Tanggal & jam','dt'],['priority','Prioritas','sel',PR],['status','Status','sel',ST],['note','Deskripsi','area']],h:r=>r.title,s:r=>`${r.category} · ${fd(r.due)}`,done:1,sort:(a,b)=>a.due.localeCompare(b.due)},
 attendance:{t:'Attendance',f:[['course','Mata kuliah'],['date','Tanggal','date'],['status','Status','sel',['Hadir','Izin','Sakit','Alpa','Libur']],['note','Catatan pertemuan']],h:r=>r.course,s:r=>`${r.date} · ${r.status} ${r.note?'· '+r.note:''}`,sort:(a,b)=>b.date.localeCompare(a.date)},
-transactions:{t:'Academic Finance',f:[['type','Jenis','sel',['Keluar','Masuk']],['category','Kategori','sel',['UKT/SPP','Registrasi','Praktikum','Buku & materi','Transportasi','Peralatan','Lainnya']],['amount','Nominal','number'],['date','Tanggal','date'],['note','Catatan']],h:r=>`${r.type==='Masuk'?'+':'-'} ${rp(r.amount)}`,s:r=>`${r.category} · ${r.date} · ${r.note||''}`,sort:(a,b)=>b.date.localeCompare(a.date)}
+payments:{t:'Bukti Pembayaran',f:[['title','Nama pembayaran'],['category','Kategori','sel',['UKT/SPP','Registrasi','Praktikum','Buku & materi','Transportasi','Peralatan','Lainnya']],['amount','Nominal','number'],['date','Tanggal bayar','date'],['semester','Semester','number'],['file_path','Foto / PDF bukti','file'],['note','Catatan','area']],h:r=>`${r.title} — ${rp(r.amount)}`,s:r=>`${r.category} · ${r.date} · Smt ${r.semester||'-'}${r.file_path?' · 📎 ada bukti':' · belum ada bukti'}`,sort:(a,b)=>b.date.localeCompare(a.date)},
+courses:{t:'Jadwal Makul',f:[['name','Nama makul'],['code','Kode'],['lecturer','Dosen'],['day','Hari','sel',D],['start_time','Mulai','time'],['end_time','Selesai','time'],['room','Ruangan'],['semester','Semester','number'],['sks','SKS','number'],['note','Catatan','area']]},
+grades:{t:'Academic Progress',f:[['course_name','Mata kuliah'],['code','Kode'],['semester','Semester','number'],['sks','SKS','number'],['metode','Metode','sel',['','Tuton','Non-Tuton','Praktikum','Berpraktik','Bimbingan','Lainnya']],['letter','Nilai huruf (kosong = belum ada)','sel',['',...Object.keys(BW)]]]}
 };
-const IC={"dash": "🏠", "courses": "📚", "tasks": "✅", "deadlines": "⏰", "grades": "🎓", "attendance": "🙋", "transactions": "💰", "set": "⚙️"};
-const NAV=[['dash','Dashboard'],...Object.keys(M).map(k=>[k,M[k].t]),['set','Setting']];
-let cache={}, page='dash', user;
-const load=async k=>{const{data,error}=await sb.from(k).select('*');if(error)alert(error.message);return cache[k]=(data||[]).sort(M[k]?.sort||(()=>0))};
+const NAV=[['dash','Dashboard','home'],['courses','Jadwal Makul','book'],['tasks','My Task','task'],['cal','My Calendar','cal'],['deadlines','Deadline','flag'],['grades','Academic Progress','cap'],['attendance','Attendance','user'],['payments','Bukti Pembayaran','rec'],['set','Setting','cog']];
+let cache={},page='dash',user,ep,selDay=new Date().getDay(),cm=new Date(new Date().getFullYear(),new Date().getMonth(),1),cd=key(new Date());
+const load=async k=>{const{data,error}=await sb.from(k).select('*');if(error)throw error;return cache[k]=(data||[]).sort(M[k]?.sort||((a,b)=>(a.start_time||'').localeCompare(b.start_time||'')||(a.semester-b.semester)||0))};
 
-/* ---------- AUTH ---------- */
 async function boot(){
- let{data}=await sb.auth.getSession(); user=data.session?.user;
- if(!user){const r=await sb.auth.signInAnonymously();if(r.error)alert('Gagal masuk otomatis: '+r.error.message);user=r.data?.user}
- if(!user){$('#nav').hidden=true;$('#app').innerHTML=`<h2>🎓 Campus Tracker</h2><div class=card><input id=em type=email placeholder=Email><input id=pw type=password placeholder="Password (min 6)"><div class=row><button class=pri onclick=auth(1)>Masuk</button><button onclick=auth(0)>Daftar</button></div></div>`;return}
+ let{data}=await sb.auth.getSession();user=data.session?.user;
+ if(!user){const r=await sb.auth.signInAnonymously();if(r.error)throw r.error;user=r.data.user}
  $('#nav').hidden=false;render();
 }
-async function auth(login){
- const c={email:$('#em').value,password:$('#pw').value};
- const{error}=await(login?sb.auth.signInWithPassword(c):sb.auth.signUp(c));
- if(error)return alert(error.message);boot();
-}
-async function logout(){await sb.auth.signOut();boot()}
-
-/* ---------- RENDER ---------- */
-async function render(){
- $('#nav').innerHTML=NAV.map(([k,l])=>`<button class="${k==page?'on':''}" onclick="go('${k}')"><i>${IC[k]}</i><span>${l}</span></button>`).join('');
- const a=$('#app');a.innerHTML='Memuat…';
- if(page=='dash')return dash(a);
- if(page=='set')return a.innerHTML=`<h2>Setting</h2><div class=card><p>${esc(user.email)}</p><label>Batas minimum kehadiran (%)<input type=number value=${MIN} onchange="localStorage.minAbs=this.value"></label><button onclick=backup()>⬇ Backup data (JSON)</button> <button onclick=logout()>Logout</button></div>`;
- const m=M[page],rows=await load(page);let top='';
- if(page=='grades')top=gradeSum(rows); if(page=='attendance')top=absSum(rows); if(page=='transactions')top=finSum(rows);
- a.innerHTML=`<div class=row><h2>${m.t}</h2><button class=pri onclick="edit()">+ Tambah</button></div>${top}${m.q?'<input placeholder="Cari…" oninput="filt(this.value)">':''}<div id=list>${list(rows)}</div>`;
-}
 const go=k=>{page=k;render()};
+async function render(){
+ $('#nav').innerHTML=NAV.map(([k,l,i])=>`<button class="${k==page?'on':''}" onclick="go('${k}')">${I(i)}<span>${l}</span></button>`).join('');
+ const a=$('#app');a.innerHTML='Memuat…';scrollTo(0,0);
+ if(page=='dash')return dash(a);if(page=='courses')return pgCourses(a);if(page=='cal')return pgCal(a);if(page=='grades')return pgGrades(a);if(page=='set')return pgSet(a);
+ const m=M[page],rows=await load(page);let top='';
+ if(page=='attendance')top=absSum(rows);if(page=='payments')top=`<div class=card><small>Total tercatat</small><h3>${rp(rows.reduce((s,r)=>s+(+r.amount||0),0))}</h3></div>`;
+ a.innerHTML=`<div class=row><h2>${m.t}</h2><button class=pri onclick="edit()">${I('plus',18)} Tambah</button></div>${top}${m.q?'<input placeholder="Cari…" oninput="filt(this.value)">':''}<div id=list>${list(rows)}</div>`;
+}
 const stat=r=>{const d=r.due||r.deadline;if(r.status=='Selesai')return'Completed';if(!d)return'';const t=new Date(d),n=new Date();return t<n?'Overdue':t.toDateString()==n.toDateString()?'Due Today':'Upcoming'};
-function list(rows){const m=M[page];return rows.map(r=>{const s=m.done?stat(r):'';return`<div class=card><div class=row><div><h3>${esc(m.h(r))}</h3><div class=sub>${esc(m.s(r))}</div></div>${s?`<span class="chip ${s=='Overdue'?'red':''}">${s}</span>`:''}</div><div class=row style="justify-content:flex-start">${m.done?`<button onclick="tog('${r.id}')">${r.status=='Selesai'?'↩ Buka':'✓ Selesai'}</button>`:''}<button onclick="edit('${r.id}')">Edit</button><button onclick="del('${r.id}')">Hapus</button></div></div>`}).join('')||'<p class=sub>Belum ada data.</p>'}
+function list(rows){const m=M[page];return rows.map(r=>{const s=m.done?stat(r):'';return`<div class=card><div class=row><div><h3>${esc(m.h(r))}</h3><div class=sub>${esc(m.s(r))}</div></div>${s?`<span class="chip ${s=='Overdue'?'red':''}">${s}</span>`:''}</div><div class=row style="justify-content:flex-start;margin-top:6px">${m.done?`<button class=ic onclick="tog('${r.id}')">${I('chk',18)} ${r.status=='Selesai'?'Buka lagi':'Selesai'}</button>`:''}${r.file_path?`<button class=ic onclick="openF('${esc(r.file_path)}')">${I('clip',18)} Lihat bukti</button>`:''}<button class=ic onclick="edit('${r.id}')">${I('edit',18)}</button><button class=ic onclick="del('${r.id}')">${I('trash',18)}</button></div></div>`}).join('')||'<p class=sub>Belum ada data.</p>'}
 const filt=q=>{$('#list').innerHTML=list(cache[page].filter(r=>JSON.stringify(r).toLowerCase().includes(q.toLowerCase())))};
 async function tog(id){const r=cache[page].find(x=>x.id==id);await sb.from(page).update({status:r.status=='Selesai'?'Belum':'Selesai'}).eq('id',id);render()}
-async function del(id){if(confirm('Hapus data ini?')){await sb.from(page).delete().eq('id',id);render()}}
+async function del(id,pg){if(confirm('Hapus data ini?')){await sb.from(pg||page).delete().eq('id',id);render()}}
+async function openF(p){const w=window.open('');const{data,error}=await sb.storage.from('bukti').createSignedUrl(p,300);if(error){w.close();return alert(error.message)}w.location=data.signedUrl}
 
-/* ---------- FORM ---------- */
+/* form */
 const loc=v=>v?new Date(new Date(v)-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,16):'';
-function edit(id){
- const m=M[page],r=id?cache[page].find(x=>x.id==id):{};
- $('#mod').innerHTML=`<div class=modal><div><h3>${id?'Edit':'Tambah'} ${m.t}</h3>${m.f.map(([k,l,t,o],i)=>{const v=r[k]??'';return`<label>${l}${t=='sel'?`<select id=f${i}>${o.map(x=>`<option ${x==v?'selected':''}>${x}</option>`).join('')}</select>`:t=='area'?`<textarea id=f${i}>${esc(v)}</textarea>`:`<input id=f${i} type="${t=='dt'?'datetime-local':t||'text'}" value="${esc(t=='dt'?loc(v):v)}">`}</label>`}).join('')}<div class=row><button class=pri onclick="save('${id||''}')">Simpan</button><button onclick="$('#mod').innerHTML=''">Batal</button></div></div></div>`;
+function edit(id,pg,pre){
+ ep=pg||page;const m=M[ep],r=id?(cache[ep]||[]).find(x=>x.id==id):(pre||{});
+ $('#mod').innerHTML=`<div class=modal><div><h3>${id?'Edit':'Tambah'} · ${m.t}</h3>${m.f.map(([k,l,t,o],i)=>{const v=r[k]??'';return`<label>${l}${t=='file'?`<input id=f${i} type=file accept="image/jpeg,image/png,application/pdf">${v?'<small>Sudah ada file. Pilih lagi untuk mengganti.</small>':''}`:t=='sel'?`<select id=f${i}>${o.map(x=>`<option ${x==v?'selected':''}>${x}</option>`).join('')}</select>`:t=='area'?`<textarea id=f${i}>${esc(v)}</textarea>`:`<input id=f${i} type="${t=='dt'?'datetime-local':t||'text'}" value="${esc(t=='dt'?loc(v):v)}">`}</label>`}).join('')}<div class=row style="margin-top:10px"><button class=pri onclick="save('${id||''}')">Simpan</button><button onclick="$('#mod').innerHTML=''">Batal</button></div></div></div>`;
 }
 async function save(id){
- const o={};M[page].f.forEach(([k,,t],i)=>{let v=$('#f'+i).value;o[k]=v===''?null:t=='dt'?new Date(v).toISOString():t=='number'?+v:v});
- const{error}=await(id?sb.from(page).update(o).eq('id',id):sb.from(page).insert(o));
+ const o={};let fi=null;
+ M[ep].f.forEach(([k,,t],i)=>{if(t=='file'){fi=[k,$('#f'+i).files[0]];return}let v=$('#f'+i).value;o[k]=v===''?null:t=='dt'?new Date(v).toISOString():t=='number'?+v:v});
+ if(fi&&fi[1]){const f=fi[1];if(f.size>5e6||!/^(image\/(jpeg|png)|application\/pdf)$/.test(f.type))return alert('File harus JPG, PNG, atau PDF dan maksimal 5 MB');
+  const path=user.id+'/'+Date.now()+'-'+f.name.replace(/[^\w.]/g,'_');const u=await sb.storage.from('bukti').upload(path,f);if(u.error)return alert(u.error.message);o[fi[0]]=path}
+ const{error}=await(id?sb.from(ep).update(o).eq('id',id):sb.from(ep).insert(o));
  if(error)return alert(error.message);$('#mod').innerHTML='';render();
 }
 
-/* ---------- RINGKASAN ---------- */
-function ipk(rows){ // hanya nilai yang sudah ada huruf-nya
- const g=rows.filter(r=>r.letter),by={};let q=0,s=0;
- g.forEach(r=>{const w=BW[r.letter]*r.sks;(by[r.semester]??=[0,0]);by[r.semester][0]+=w;by[r.semester][1]+=r.sks;q+=w;s+=r.sks});
- return{ipk:s?q/s:null,sks:s,by,miss:rows.length-g.length}
+/* jadwal per hari */
+async function pgCourses(a){
+ const rows=await load('courses'),cnt=d=>rows.filter(r=>r.day==D[d]).length,day=rows.filter(r=>r.day==D[selDay]);
+ a.innerHTML=`<div class=row><h2>Jadwal Makul</h2><button class=pri onclick="edit(0,'courses')">${I('plus',18)} Tambah</button></div>
+ <div class=tabs>${[1,2,3,4,5,6,0].map(d=>`<button class="${d==selDay?'on':''}" onclick="selDay=${d};pgCourses($('#app'))"><b>${DS[d]}</b><small style="color:inherit">${cnt(d)} kelas</small></button>`).join('')}</div>
+ <h3>${D[selDay]}</h3>${day.map(r=>`<div class="card cls" style="border-color:${col(r.name)}"><div class=t>${r.start_time||''}<br><small>${r.end_time||''}</small></div><div style="flex:1"><h3>${esc(r.name)}</h3><div class=sub>${esc(r.code||'')} · ${esc(r.room||'-')} · ${esc(r.lecturer||'-')}</div><div class=row style="justify-content:flex-start;margin-top:4px"><button class=ic onclick="edit('${r.id}','courses')">${I('edit',18)}</button><button class=ic onclick="del('${r.id}','courses')">${I('trash',18)}</button></div></div></div>`).join('')||'<p class=sub>Tidak ada kelas di hari ini.</p>'}`;
 }
-function gradeSum(rows){const x=ipk(rows);return`<div class=card><b>IPK: ${x.ipk?.toFixed(2)??'-'}</b> · SKS lulus: ${x.sks}${x.miss?` · <span class=red>⚠ ${x.miss} makul belum bernilai (tidak dihitung)</span>`:''}<br>${Object.entries(x.by).map(([k,v])=>`<span class=chip>Smt ${k}: IPS ${(v[0]/v[1]).toFixed(2)}</span>`).join(' ')}</div>`}
-function absCalc(rows){const by={};rows.forEach(r=>{const c=by[r.course]??={h:0,t:0};if(r.status=='Libur')return;c.t++;if(r.status=='Hadir')c.h++});return by}
-function absSum(rows){const by=absCalc(rows);return`<div class=card>${Object.entries(by).map(([k,v])=>{const p=v.h/v.t*100;return`<div class=row><span>${esc(k)}</span><span class="${p<MIN+5?'red':''}">${p.toFixed(0)}% (${v.h}/${v.t})${p<MIN+5?' ⚠':''}</span></div>`}).join('')||'Belum ada data'}<small>Libur/dibatalkan tidak dihitung. Batas minimum ${MIN}%.</small></div>`}
-function finSum(rows){const i=rows.filter(r=>r.type=='Masuk').reduce((a,r)=>a+r.amount,0),o=rows.filter(r=>r.type=='Keluar').reduce((a,r)=>a+r.amount,0);return`<div class=card>Masuk ${rp(i)} · Keluar ${rp(o)}<br><b>Saldo ${rp(i-o)}</b></div>`}
 
-/* ---------- DASHBOARD + MEMO ---------- */
+/* kalender */
+async function pgCal(a){
+ const[c,t,d]=await Promise.all(['courses','tasks','deadlines'].map(load));
+ const ev=k=>{const dt=new Date(k+'T00:00'),o=[];c.filter(x=>x.day==D[dt.getDay()]).forEach(x=>o.push({c:'#1e3d59',tx:`${x.start_time||''} ${x.name}`,k:'Kuliah'}));
+  t.filter(x=>x.deadline&&key(x.deadline)==k).forEach(x=>o.push({c:'#ff6e40',tx:x.title,k:'Tugas',id:x.id,pg:'tasks',done:x.status=='Selesai'}));
+  d.filter(x=>key(x.due)==k).forEach(x=>o.push({c:'#d99a00',tx:`${x.title} (${x.category})`,k:'Deadline',id:x.id,pg:'deadlines',done:x.status=='Selesai'}));return o};
+ const y=cm.getFullYear(),mo=cm.getMonth(),first=cm.getDay(),n=new Date(y,mo+1,0).getDate();let cells='';
+ for(let i=0;i<first;i++)cells+='<span></span>';
+ for(let i=1;i<=n;i++){const k=`${y}-${p2(mo+1)}-${p2(i)}`;cells+=`<button class="cell ${k==cd?'sel':''} ${k==key(new Date())?'today':''}" onclick="cd='${k}';pgCal($('#app'))">${i}<span class=dots>${[...new Set(ev(k).map(e=>e.c))].map(x=>`<i style="background:${x}"></i>`).join('')}</span></button>`}
+ a.innerHTML=`<div class=row><h2>My Calendar</h2><button class=pri onclick="edit(0,'deadlines',{due:'${cd}T08:00',category:'Agenda'})">${I('plus',18)} Agenda</button></div>
+ <div class=card><div class=row><button class=ic onclick="cm=new Date(${y},${mo-1},1);pgCal($('#app'))">${I('l')}</button><h3 style="margin:0">${cm.toLocaleDateString('id-ID',{month:'long',year:'numeric'})}</h3><button class=ic onclick="cm=new Date(${y},${mo+1},1);pgCal($('#app'))">${I('r')}</button></div>
+ <div class=cal style="margin-top:8px">${DS.map(x=>`<b>${x}</b>`).join('')}${cells}</div><small><span class=dot style="background:#1e3d59;width:9px;height:9px"></span>Kuliah <span class=dot style="background:#ff6e40;width:9px;height:9px"></span>Tugas <span class=dot style="background:#d99a00;width:9px;height:9px"></span>Deadline/agenda</small></div>
+ <h3>${new Date(cd+'T00:00').toLocaleDateString('id-ID',{dateStyle:'full'})}</h3>${ev(cd).map(e=>`<div class="card cls" style="border-color:${e.c};${e.done?'opacity:.5':''}"><div style="flex:1"><b>${esc(e.tx)}</b><div class=sub>${e.k}</div></div>${e.id?`<button class=ic onclick="edit('${e.id}','${e.pg}')">${I('edit',18)}</button>`:''}</div>`).join('')||'<p class=sub>Tidak ada agenda.</p>'}`;
+}
+
+/* nilai per semester */
+function ipk(rows){const g=rows.filter(r=>r.letter),by={};let q=0,s=0;g.forEach(r=>{const w=BW[r.letter]*r.sks;(by[r.semester]??=[0,0]);by[r.semester][0]+=w;by[r.semester][1]+=r.sks;q+=w;s+=r.sks});return{ipk:s?q/s:null,sks:s,by,miss:rows.length-g.length}}
+const UT=[['STTP4101','Pengantar Kimia untuk Teknologi Pangan',1,3,null],['STTP4102','Kimia Organik Pangan',1,3,null],['STTP4103','Mikrobiologi Dasar Pangan',1,3,null],['STTP4111','Mikrobiologi dan Sanitasi Pangan',2,3,null],['STTP4112','Kimia Pangan',2,3,null],['STTP4206','Praktikum Mikrobiologi dan Sanitasi Pangan',3,2,'Praktikum']];
+async function seedUT(){const have=(cache.grades||[]).map(r=>r.code),add=UT.filter(u=>!have.includes(u[0])).map(u=>({code:u[0],course_name:u[1],semester:u[2],sks:u[3],metode:u[4]}));if(!add.length)return alert('Semua sudah ada.');const{error}=await sb.from('grades').insert(add);if(error)return alert(error.message);render()}
+async function setNil(id,v){await sb.from('grades').update({letter:v||null}).eq('id',id);render()}
+async function pgGrades(a){
+ const rows=await load('grades'),x=ipk(rows),by={};rows.forEach(r=>(by[r.semester]??=[]).push(r));
+ a.innerHTML=`<div class=row><h2>Academic Progress</h2><button class=pri onclick="edit(0,'grades')">${I('plus',18)} Makul</button></div>
+ <div class=grid><div class=tile><small>IPK</small><b>${x.ipk?.toFixed(2)??'-'}</b></div><div class=tile><small>SKS lulus</small><b>${x.sks}<small> / 144</small></b></div></div>
+ ${x.miss?`<p class="sub red">⚠ ${x.miss} makul belum bernilai (tidak dihitung sebagai nol)</p>`:''}
+ ${Object.keys(by).sort((p,q)=>p-q).map(s=>{const r=by[s],ips=x.by[s]?(x.by[s][0]/x.by[s][1]).toFixed(2):'-';return`<div class=card><div class=row><h3>Semester ${s}</h3><span class=chip>${r.reduce((a,b)=>a+b.sks,0)} SKS · IPS ${ips}</span></div><div class=tw><table><tr><th>Kode<th>Mata Kuliah<th>SKS<th>Metode<th>Nilai<th></tr>${r.map(g=>`<tr><td>${esc(g.code||'')}<td style="white-space:normal;min-width:170px">${esc(g.course_name)}<td>${g.sks}<td>${esc(g.metode||'-')}<td><select onchange="setNil('${g.id}',this.value)">${['',...Object.keys(BW)].map(o=>`<option ${o==(g.letter||'')?'selected':''}>${o}</option>`).join('')}</select><td><button class=ic onclick="edit('${g.id}','grades')">${I('edit',16)}</button><button class=ic onclick="del('${g.id}','grades')">${I('trash',16)}</button></tr>`).join('')}</table></div></div>`}).join('')||'<p class=sub>Belum ada mata kuliah.</p>'}
+ <div class=card><h3>Daftar makul Teknologi Pangan UT</h3><p class=sub>Berisi makul yang terverifikasi dari katalog UT (semester 1-3). Lengkapi sisanya lewat tombol Makul, sesuai Katalog Kurikulum FST UT.</p><button class=pri onclick=seedUT()>Muat daftar awal</button></div>`;
+}
+
+/* absensi */
+function absSum(rows){const by={};rows.forEach(r=>{const c=by[r.course]??={h:0,t:0};if(r.status=='Libur')return;c.t++;if(r.status=='Hadir')c.h++});return`<div class=card>${Object.entries(by).map(([k,v])=>{const p=v.h/v.t*100;return`<div class=row><span>${esc(k)}</span><span class="${p<MIN+5?'red':''}">${p.toFixed(0)}% (${v.h}/${v.t})${p<MIN+5?' ⚠':''}</span></div>`}).join('')||'Belum ada data'}<small>Libur tidak dihitung. Batas minimum ${MIN}%.</small></div>`}
+
+/* memo berwarna */
+const mt={};
+async function memos(box){const{data}=await sb.from('memos').select('*').order('created_at');
+ box.innerHTML=`<div class=row><h3>Catatan</h3><button class=pri onclick=addMemo()>${I('plus',18)} Memo</button></div><div class=notes>${(data||[]).map((m,i)=>`<div class=note style="background:${m.color||MC[i%5]}"><textarea placeholder="Tulis memo…" oninput="ms('${m.id}',this)">${esc(m.content)}</textarea><div class=row><span>${MC.map(c=>`<i class=dot style="background:${c}" onclick="mcol('${m.id}','${c}')"></i>`).join('')}</span><button class=ic onclick="mdel('${m.id}')">${I('trash',16)}</button></div><small id=t${m.id}>${fd(m.updated_at)}</small></div>`).join('')}</div>`}
+async function addMemo(){await sb.from('memos').insert({content:'',color:MC[Math.floor(Math.random()*5)]});memos($('#mbox'))}
+const mcol=async(id,c)=>{await sb.from('memos').update({color:c}).eq('id',id);memos($('#mbox'))};
+const mdel=async id=>{if(confirm('Hapus memo?')){await sb.from('memos').delete().eq('id',id);memos($('#mbox'))}};
+function ms(id,el){$('#t'+id).textContent='menyimpan…';clearTimeout(mt[id]);mt[id]=setTimeout(async()=>{const u=new Date().toISOString();await sb.from('memos').update({content:el.value,updated_at:u}).eq('id',id);$('#t'+id).textContent=fd(u)},700)}
+
+/* dashboard */
 async function dash(a){
- const[c,t,d,g,at,tr,mm]=await Promise.all([...['courses','tasks','deadlines','grades','attendance','transactions'].map(load),sb.from('memos').select('*').order('updated_at',{ascending:false})]);
- let memo=mm.data?.[0];if(!memo){memo=(await sb.from('memos').insert({content:''}).select().single()).data}
- const h=new Date().getHours(),hari=D[new Date().getDay()],ab=Object.values(absCalc(at)),ah=ab.reduce((x,v)=>x+v.h,0),atot=ab.reduce((x,v)=>x+v.t,0);
- const today=c.filter(x=>x.day==hari),open=t.filter(x=>x.status!='Selesai'),near=d.filter(x=>x.status!='Selesai').slice(0,4);
- a.innerHTML=`<div class=hero><h2>${h<11?'Selamat pagi':h<15?'Selamat siang':h<18?'Selamat sore':'Selamat malam'} 👋</h2><small>${new Date().toLocaleDateString('id-ID',{dateStyle:'full',timeZone:'Asia/Jakarta'})}</small></div>
- <div class=card><h3>Kuliah hari ini</h3>${today.map(x=>`<div>${x.start_time} ${esc(x.name)} <small>${esc(x.room||'')}</small></div>`).join('')||'<small>Tidak ada kelas 🎉</small>'}</div>
- <div class=card><h3>Tugas belum selesai</h3>${open.slice(0,3).map(x=>`<div>${esc(x.title)} <small>${fd(x.deadline)}</small></div>`).join('')}</div>
- <div class=card><h3>Deadline terdekat</h3>${near.map(x=>`<div>${esc(x.title)} <small>${fd(x.due)} · ${stat(x)}</small></div>`).join('')||'<small>Kosong</small>'}</div>
- <div class=grid><div class=tile><small>🎓 IPK</small><b>${ipk(g).ipk?.toFixed(2)??'-'}</b></div><div class=tile><small>🙋 Kehadiran</small><b>${atot?(ah/atot*100).toFixed(0)+'%':'-'}</b></div><div class=tile><small>✅ Tugas aktif</small><b>${open.length}</b></div><div class=tile><small>💰 Saldo kuliah</small><b style=font-size:17px>${rp(tr.filter(x=>x.type=='Masuk').reduce((s,x)=>s+x.amount,0)-tr.filter(x=>x.type=='Keluar').reduce((s,x)=>s+x.amount,0))}</b></div></div>
- <div class=card><h3>📝 Memo <small id=ms>tersimpan ${fd(memo.updated_at)}</small></h3><textarea id=memo oninput="memoSave('${memo.id}')">${esc(memo.content)}</textarea></div>`;
+ const[c,t,d,g,at,py]=await Promise.all(['courses','tasks','deadlines','grades','attendance','payments'].map(load));
+ const h=new Date().getHours(),today=c.filter(x=>x.day==D[new Date().getDay()]),open=t.filter(x=>x.status!='Selesai'),near=d.filter(x=>x.status!='Selesai').slice(0,4);
+ const ab=Object.values(Object.values(at.reduce((o,r)=>{if(r.status!='Libur'){const q=o[r.course]??={h:0,t:0};q.t++;if(r.status=='Hadir')q.h++}return o},{}))),ah=ab.reduce((s,v)=>s+v.h,0),atot=ab.reduce((s,v)=>s+v.t,0);
+ a.innerHTML=`<div class=hero><h2>${h<11?'Selamat pagi':h<15?'Selamat siang':h<18?'Selamat sore':'Selamat malam'}</h2><small>${new Date().toLocaleDateString('id-ID',{dateStyle:'full',timeZone:'Asia/Jakarta'})}</small></div>
+ <div class=grid><div class=tile><small>IPK</small><b>${ipk(g).ipk?.toFixed(2)??'-'}</b></div><div class=tile><small>Kehadiran</small><b>${atot?(ah/atot*100).toFixed(0)+'%':'-'}</b></div><div class=tile><small>Tugas aktif</small><b>${open.length}</b></div><div class=tile><small>Total bayar</small><b style="font-size:18px">${rp(py.reduce((s,r)=>s+(+r.amount||0),0))}</b></div></div>
+ <div class=card><h3>Kuliah hari ini</h3>${today.map(x=>`<div class=row><span><b>${x.start_time||''}</b> ${esc(x.name)}</span><small>${esc(x.room||'')}</small></div>`).join('')||'<small>Tidak ada kelas</small>'}</div>
+ <div class=card><h3>Deadline terdekat</h3>${near.map(x=>`<div class=row><span>${esc(x.title)}</span><span class="chip ${stat(x)=='Overdue'?'red':''}">${stat(x)}</span></div>`).join('')||'<small>Kosong</small>'}</div>
+ <div id=mbox></div>`;memos($('#mbox'));
 }
-let mt;function memoSave(id){$('#ms').textContent='menyimpan…';clearTimeout(mt);mt=setTimeout(async()=>{const u=new Date().toISOString();await sb.from('memos').update({content:$('#memo').value,updated_at:u}).eq('id',id);$('#ms').textContent='tersimpan '+fd(u)},700)}
-
-async function backup(){const o={};for(const k of Object.keys(M))o[k]=await load(k);const b=new Blob([JSON.stringify(o,null,1)],{type:'application/json'}),l=document.createElement('a');l.href=URL.createObjectURL(b);l.download='campus-tracker-backup.json';l.click()}
+async function pgSet(a){a.innerHTML=`<h2>Setting</h2><div class=card><p class=sub>Mode tanpa login: data terikat ke browser/HP ini. Jangan hapus data Chrome, dan rutin backup.</p><label>Batas minimum kehadiran (%)<input type=number value=${MIN} onchange="localStorage.minAbs=this.value"></label><button class=pri onclick=backup()>Backup data (JSON)</button></div>`}
+async function backup(){const o={};for(const k of ['courses','tasks','deadlines','grades','attendance','payments','memos'])o[k]=(await sb.from(k).select('*')).data;const b=new Blob([JSON.stringify(o,null,1)],{type:'application/json'}),l=document.createElement('a');l.href=URL.createObjectURL(b);l.download='campus-tracker-backup.json';l.click()}
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');
 boot();
 </script></body></html>
