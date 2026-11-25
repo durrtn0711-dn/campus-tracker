@@ -4,31 +4,40 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#059669">
 <link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
 <title>Campus Tracker</title>
 <style>
-:root{--p:#059669;--bg:#f7faf8;--s:#fff;--t:#1f2937;--m:#d1fae5;--b:#e5e7eb;--sg:#6b8f71}
-@media(prefers-color-scheme:dark){:root{--bg:#0f1713;--s:#18231d;--t:#e5efe9;--m:#14392b;--b:#2a3a31}}
-*{box-sizing:border-box}body{margin:0;font:15px system-ui,sans-serif;background:var(--bg);color:var(--t);padding-bottom:70px}
-main{max-width:720px;margin:auto;padding:14px}
-.card{background:var(--s);border:1px solid var(--b);border-radius:16px;padding:12px;margin:0 0 10px}
-h2{margin:6px 0 12px}h3{margin:0 0 6px}small,.sub{color:var(--sg);font-size:13px}
-button,input,select,textarea{font:inherit;color:inherit;border-radius:12px;border:1px solid var(--b);background:var(--s);padding:10px;width:100%;margin:4px 0}
-button{width:auto;min-height:42px;cursor:pointer}.pri{background:var(--p);color:#fff;border:0}
-.row{display:flex;gap:8px;align-items:center;justify-content:space-between}
-.chip{background:var(--m);border-radius:99px;padding:2px 10px;font-size:12px}
-.red{color:#dc2626}
-nav{position:fixed;bottom:0;left:0;right:0;background:var(--s);border-top:1px solid var(--b);display:flex;overflow-x:auto;padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
-nav button{border:0;background:none;white-space:nowrap;padding:8px 12px}nav .on{background:var(--m);color:var(--p);font-weight:600}
-.modal{position:fixed;inset:0;background:#0008;display:flex;align-items:flex-end;z-index:9}
-.modal>div{background:var(--bg);width:100%;max-height:90vh;overflow:auto;padding:16px;border-radius:20px 20px 0 0}
-textarea{min-height:110px}
+:root{--p:#059669;--p2:#047857;--bg:#f3f8f5;--s:#fff;--t:#1f2937;--m:#d1fae5;--b:#e3ece7;--sg:#6b8f71;--sh:0 2px 10px #05966914}
+@media(prefers-color-scheme:dark){:root{--bg:#0e1612;--s:#17221c;--t:#e5efe9;--m:#14392b;--b:#27382e;--sh:none}}
+*{box-sizing:border-box}body{margin:0;font:15px/1.45 system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--t);padding-bottom:84px}
+main{max-width:760px;margin:auto;padding:14px}
+.hero{background:linear-gradient(135deg,#10b981,#047857);color:#fff;border-radius:22px;padding:20px;margin-bottom:12px;box-shadow:0 8px 20px #04785733}
+.hero h2{margin:0 0 4px;font-size:24px}.hero small{color:#d1fae5}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.tile{background:var(--s);border:1px solid var(--b);border-radius:18px;padding:14px;box-shadow:var(--sh)}
+.tile b{display:block;font-size:24px;color:var(--p)}.tile small{display:block}
+.card{background:var(--s);border:1px solid var(--b);border-radius:18px;padding:14px;margin:0 0 10px;box-shadow:var(--sh)}
+h2{margin:6px 0 12px}h3{margin:0 0 6px;font-size:16px}small,.sub{color:var(--sg);font-size:13px}
+button,input,select,textarea{font:inherit;color:inherit;border-radius:12px;border:1px solid var(--b);background:var(--s);padding:11px;width:100%;margin:4px 0}
+button{width:auto;min-height:44px;cursor:pointer;transition:.15s}button:active{transform:scale(.97)}
+.pri{background:var(--p);color:#fff;border:0;font-weight:600;border-radius:99px;padding:10px 18px}
+.row{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.chip{background:var(--m);color:var(--p2);border-radius:99px;padding:3px 11px;font-size:12px;font-weight:600}
+.red{color:#dc2626}.chip.red{background:#fee2e2}
+nav{position:fixed;bottom:0;left:0;right:0;background:var(--s);border-top:1px solid var(--b);display:flex;overflow-x:auto;padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:5;box-shadow:0 -4px 14px #0001}
+nav button{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:68px;padding:6px 4px;font-size:11px;white-space:nowrap;margin:0;border-radius:14px}
+nav i{font-style:normal;font-size:20px}nav .on{background:var(--m);color:var(--p2);font-weight:700}
+.modal{position:fixed;inset:0;background:#0007;display:flex;align-items:flex-end;justify-content:center;z-index:9}
+.modal>div{background:var(--bg);width:100%;max-width:560px;max-height:90vh;overflow:auto;padding:18px;border-radius:24px 24px 0 0}
+textarea{min-height:110px}label{display:block;font-size:13px;color:var(--sg);margin-top:6px}
+@media(min-width:900px){body{padding:0 0 0 230px}nav{top:0;bottom:auto;right:auto;width:230px;flex-direction:column;overflow:auto;padding:20px 12px;border:0;border-right:1px solid var(--b);box-shadow:none}
+nav button{flex-direction:row;gap:12px;font-size:15px;width:100%;padding:11px 14px;justify-content:flex-start}.modal{align-items:center}.modal>div{border-radius:24px}}
 </style></head><body>
 <main id="app"></main><nav id="nav" hidden></nav><div id="mod"></div>
+<script src="config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>
-/* ====== ISI 2 BARIS INI DARI SUPABASE > Project Settings > API ====== */
-const SB_URL="https://rnvnohlnqbzfspvmxbhl.supabase.co", SB_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJudm5vaGxucWJ6ZnNwdm14YmhsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTU1NzI4NDQsImV4cCI6MjExMTE0ODg0NH0.UFbgsE3FSAD98venGRJ4VYZXk4Vi57by-fTnRyVQXmQ";
-/* ==================================================================== */
 const sb=supabase.createClient(SB_URL,SB_KEY);
 const $=s=>document.querySelector(s), D=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
 const BW={A:4,'A-':3.7,'B+':3.3,B:3,'B-':2.7,'C+':2.3,C:2,D:1,E:0};
@@ -45,13 +54,15 @@ grades:{t:'Academic Progress',f:[['course_name','Mata kuliah'],['code','Kode'],[
 attendance:{t:'Attendance',f:[['course','Mata kuliah'],['date','Tanggal','date'],['status','Status','sel',['Hadir','Izin','Sakit','Alpa','Libur']],['note','Catatan pertemuan']],h:r=>r.course,s:r=>`${r.date} · ${r.status} ${r.note?'· '+r.note:''}`,sort:(a,b)=>b.date.localeCompare(a.date)},
 transactions:{t:'Academic Finance',f:[['type','Jenis','sel',['Keluar','Masuk']],['category','Kategori','sel',['UKT/SPP','Registrasi','Praktikum','Buku & materi','Transportasi','Peralatan','Lainnya']],['amount','Nominal','number'],['date','Tanggal','date'],['note','Catatan']],h:r=>`${r.type==='Masuk'?'+':'-'} ${rp(r.amount)}`,s:r=>`${r.category} · ${r.date} · ${r.note||''}`,sort:(a,b)=>b.date.localeCompare(a.date)}
 };
+const IC={"dash": "🏠", "courses": "📚", "tasks": "✅", "deadlines": "⏰", "grades": "🎓", "attendance": "🙋", "transactions": "💰", "set": "⚙️"};
 const NAV=[['dash','Dashboard'],...Object.keys(M).map(k=>[k,M[k].t]),['set','Setting']];
 let cache={}, page='dash', user;
 const load=async k=>{const{data,error}=await sb.from(k).select('*');if(error)alert(error.message);return cache[k]=(data||[]).sort(M[k]?.sort||(()=>0))};
 
 /* ---------- AUTH ---------- */
 async function boot(){
- const{data}=await sb.auth.getSession(); user=data.session?.user;
+ let{data}=await sb.auth.getSession(); user=data.session?.user;
+ if(!user){const r=await sb.auth.signInAnonymously();if(r.error)alert('Gagal masuk otomatis: '+r.error.message);user=r.data?.user}
  if(!user){$('#nav').hidden=true;$('#app').innerHTML=`<h2>🎓 Campus Tracker</h2><div class=card><input id=em type=email placeholder=Email><input id=pw type=password placeholder="Password (min 6)"><div class=row><button class=pri onclick=auth(1)>Masuk</button><button onclick=auth(0)>Daftar</button></div></div>`;return}
  $('#nav').hidden=false;render();
 }
@@ -64,7 +75,7 @@ async function logout(){await sb.auth.signOut();boot()}
 
 /* ---------- RENDER ---------- */
 async function render(){
- $('#nav').innerHTML=NAV.map(([k,l])=>`<button class="${k==page?'on':''}" onclick="go('${k}')">${l}</button>`).join('');
+ $('#nav').innerHTML=NAV.map(([k,l])=>`<button class="${k==page?'on':''}" onclick="go('${k}')"><i>${IC[k]}</i><span>${l}</span></button>`).join('');
  const a=$('#app');a.innerHTML='Memuat…';
  if(page=='dash')return dash(a);
  if(page=='set')return a.innerHTML=`<h2>Setting</h2><div class=card><p>${esc(user.email)}</p><label>Batas minimum kehadiran (%)<input type=number value=${MIN} onchange="localStorage.minAbs=this.value"></label><button onclick=backup()>⬇ Backup data (JSON)</button> <button onclick=logout()>Logout</button></div>`;
@@ -108,11 +119,11 @@ async function dash(a){
  let memo=mm.data?.[0];if(!memo){memo=(await sb.from('memos').insert({content:''}).select().single()).data}
  const h=new Date().getHours(),hari=D[new Date().getDay()],ab=Object.values(absCalc(at)),ah=ab.reduce((x,v)=>x+v.h,0),atot=ab.reduce((x,v)=>x+v.t,0);
  const today=c.filter(x=>x.day==hari),open=t.filter(x=>x.status!='Selesai'),near=d.filter(x=>x.status!='Selesai').slice(0,4);
- a.innerHTML=`<h2>${h<11?'Selamat pagi':h<15?'Selamat siang':h<18?'Selamat sore':'Selamat malam'} 👋</h2><small>${new Date().toLocaleDateString('id-ID',{dateStyle:'full',timeZone:'Asia/Jakarta'})}</small>
+ a.innerHTML=`<div class=hero><h2>${h<11?'Selamat pagi':h<15?'Selamat siang':h<18?'Selamat sore':'Selamat malam'} 👋</h2><small>${new Date().toLocaleDateString('id-ID',{dateStyle:'full',timeZone:'Asia/Jakarta'})}</small></div>
  <div class=card><h3>Kuliah hari ini</h3>${today.map(x=>`<div>${x.start_time} ${esc(x.name)} <small>${esc(x.room||'')}</small></div>`).join('')||'<small>Tidak ada kelas 🎉</small>'}</div>
- <div class=card><h3>Tugas belum selesai: ${open.length}</h3>${open.slice(0,3).map(x=>`<div>${esc(x.title)} <small>${fd(x.deadline)}</small></div>`).join('')}</div>
+ <div class=card><h3>Tugas belum selesai</h3>${open.slice(0,3).map(x=>`<div>${esc(x.title)} <small>${fd(x.deadline)}</small></div>`).join('')}</div>
  <div class=card><h3>Deadline terdekat</h3>${near.map(x=>`<div>${esc(x.title)} <small>${fd(x.due)} · ${stat(x)}</small></div>`).join('')||'<small>Kosong</small>'}</div>
- <div class=card><div class=row><span>IPK <b>${ipk(g).ipk?.toFixed(2)??'-'}</b></span><span>Hadir <b>${atot?(ah/atot*100).toFixed(0)+'%':'-'}</b></span></div><small>${rp(tr.filter(x=>x.type=='Masuk').reduce((s,x)=>s+x.amount,0)-tr.filter(x=>x.type=='Keluar').reduce((s,x)=>s+x.amount,0))} saldo pendidikan</small></div>
+ <div class=grid><div class=tile><small>🎓 IPK</small><b>${ipk(g).ipk?.toFixed(2)??'-'}</b></div><div class=tile><small>🙋 Kehadiran</small><b>${atot?(ah/atot*100).toFixed(0)+'%':'-'}</b></div><div class=tile><small>✅ Tugas aktif</small><b>${open.length}</b></div><div class=tile><small>💰 Saldo kuliah</small><b style=font-size:17px>${rp(tr.filter(x=>x.type=='Masuk').reduce((s,x)=>s+x.amount,0)-tr.filter(x=>x.type=='Keluar').reduce((s,x)=>s+x.amount,0))}</b></div></div>
  <div class=card><h3>📝 Memo <small id=ms>tersimpan ${fd(memo.updated_at)}</small></h3><textarea id=memo oninput="memoSave('${memo.id}')">${esc(memo.content)}</textarea></div>`;
 }
 let mt;function memoSave(id){$('#ms').textContent='menyimpan…';clearTimeout(mt);mt=setTimeout(async()=>{const u=new Date().toISOString();await sb.from('memos').update({content:$('#memo').value,updated_at:u}).eq('id',id);$('#ms').textContent='tersimpan '+fd(u)},700)}
