@@ -67,7 +67,8 @@ nav button{text-align:center}
 <script>
 const showErr=m=>{document.getElementById('app').innerHTML='<div class=card><h3>⚠ Aplikasi gagal dimuat</h3><p>'+String(m).replace(/</g,'&lt;')+'</p><small>Cek config.js dan pastikan update1.sql sudah dijalankan.</small><br><br><button class=pri onclick=location.reload()>Muat ulang</button></div>'};
 addEventListener('error',e=>showErr(e.message));addEventListener('unhandledrejection',e=>showErr(e.reason?.message||e.reason));
-const sb=supabase.createClient(SB_URL,SB_KEY);
+const actor=()=>((localStorage.actor||'Tamu').replace(/[^\w ]/g,'').trim().slice(0,20)||'Tamu');
+const sb=supabase.createClient(SB_URL,SB_KEY,{global:{headers:{'x-actor':actor()}}});
 const $=s=>document.querySelector(s),p2=n=>String(n).padStart(2,'0');
 const key=d=>{d=new Date(d);return d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate())};
 const D=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'],DS=['Min','Sen','Sel','Rab','Kam','Jum','Sab'];
@@ -93,9 +94,12 @@ let cache={},page='dash',user,ep,selDay=new Date().getDay(),cm=new Date(new Date
 const load=async k=>{const{data,error}=await sb.from(k).select('*');if(error)throw error;return cache[k]=(data||[]).sort(M[k]?.sort||((a,b)=>(a.start_time||'').localeCompare(b.start_time||'')||(a.semester-b.semester)||0))};
 
 async function boot(){
- let{data}=await sb.auth.getSession();user=data.session?.user;
- if(!user){const r=await sb.auth.signInAnonymously();if(r.error)throw r.error;user=r.data.user}
- await Promise.all(['courses','grades','tasks','deadlines'].map(k=>load(k))).catch(()=>0);setInterval(async()=>{try{await Promise.all([load('tasks'),load('deadlines')]);remind()}catch(e){}},60000);remind();$('#nav').hidden=false;render();
+ const{data}=await sb.auth.getSession();user=data.session?.user;
+ if(location.hash.includes('type=recovery')&&user)return recScreen();
+ if(!user)return loginScreen();
+ await Promise.all(['courses','grades','tasks','deadlines'].map(k=>load(k))).catch(()=>0);
+ setInterval(async()=>{try{await Promise.all([load('tasks'),load('deadlines')]);remind()}catch(e){}},60000);remind();
+ $('#nav').hidden=false;render();realtime();
 }
 const go=k=>{page=k;render()};
 async function render(){
@@ -198,10 +202,29 @@ async function dash(a){
  <div class=cols><div class=card><h3>Kuliah hari ini</h3>${today.map(x=>`<div class=row><span><b>${x.start_time||''}</b> ${esc(x.name)}</span><small>${esc(x.room||'')}</small></div>`).join('')||'<small>Tidak ada kelas</small>'}</div>
  <div class=card><h3>Tugas belum selesai</h3>${open.slice(0,3).map(x=>`<div class=row><span>${esc(x.title)}</span><small>${fd(x.deadline)}</small></div>`).join('')||'<small>Tidak ada tugas aktif</small>'}</div>
  <div class=card><h3>Deadline terdekat</h3>${near.map(x=>`<div class=row><span>${esc(x.title)}</span><span class="chip ${stat(x)=='Overdue'?'red':''}">${stat(x)}</span></div>`).join('')||'<small>Kosong</small>'}</div>
- </div><div id=mbox></div><p class=sub style="text-align:center">Campus Tracker versi 8</p></div>`;memos($('#mbox'));
+ </div><div id=mbox></div><p class=sub style="text-align:center">Campus Tracker versi 9</p></div>`;memos($('#mbox'));
 }
-async function pgSet(a){a.innerHTML=`<h2>Setting</h2><div class=card><h3>Notifikasi pengingat</h3><p class=sub>Izin saat ini: <b>${'Notification' in window?Notification.permission:'tidak didukung'}</b>. Pengingat muncul selama aplikasi terbuka (juga di latar belakang). Notifikasi saat aplikasi benar-benar tertutup butuh tahap push server yang belum dipasang.</p><label>Ingatkan berapa jam sebelum deadline<input type=number min=1 value=${+localStorage.rh||3} onchange="localStorage.rh=this.value"></label><button class=pri onclick=askN()>Aktifkan notifikasi</button> <button onclick="notif('Tes notifikasi','Kalau ini muncul, notifikasi berfungsi')">Tes</button></div><div class=card><p class=sub>Mode tanpa login: data terikat ke browser/HP ini. Jangan hapus data Chrome, dan rutin backup.</p><label>Batas minimum kehadiran (%)<input type=number value=${MIN} onchange="localStorage.minAbs=this.value"></label><button class=pri onclick=backup()>Backup data (JSON)</button></div>`}
+async function pgSet(a){const{data:lg}=await sb.from('activity_log').select('*').order('created_at',{ascending:false}).limit(60);
+ const TN={courses:'Jadwal',tasks:'Tugas',deadlines:'Deadline',grades:'Nilai',attendance:'Absensi',payments:'Pembayaran',memos:'Memo',vault_items:'Info Akun'},AC={INSERT:'menambah',UPDATE:'mengubah',DELETE:'menghapus'};
+ a.innerHTML=`<h2>Setting</h2><div class=card><h3>Akun</h3><p class=sub>Masuk sebagai ${esc(user.email||'')}. Perubahan dari HP lain muncul otomatis.</p><label>Nama kamu di perangkat ini (muncul di riwayat)<input id=an value="${esc(localStorage.actor||'')}"></label><div class=row><button class=pri onclick="localStorage.actor=$('#an').value.trim();location.reload()">Simpan nama</button><button onclick=logout()>Keluar</button></div></div>
+ <div class=card><h3>Notifikasi pengingat</h3><p class=sub>Izin saat ini: <b>${'Notification' in window?Notification.permission:'tidak didukung'}</b>. Pengingat muncul selama aplikasi terbuka. Notifikasi saat aplikasi tertutup butuh tahap push server yang belum dipasang.</p><label>Ingatkan berapa jam sebelum deadline<input type=number min=1 value=${+localStorage.rh||3} onchange="localStorage.rh=this.value"></label><button class=pri onclick=askN()>Aktifkan notifikasi</button> <button onclick="notif('Tes notifikasi','Kalau ini muncul, notifikasi berfungsi')">Tes</button></div>
+ <div class=card><label>Batas minimum kehadiran (%)<input type=number value=${MIN} onchange="localStorage.minAbs=this.value"></label><button class=pri onclick=backup()>Backup data (JSON)</button></div>
+ <div class=card><h3>Riwayat kegiatan</h3>${(lg||[]).map(l=>`<div class=row style="padding:5px 0;border-bottom:1px solid var(--b)"><span><b>${esc(l.actor||'?')}</b> ${AC[l.action]||l.action} ${TN[l.tbl]||l.tbl}${l.label?': '+esc(l.label):''}</span><small>${fd(l.created_at)}</small></div>`).join('')||'<small>Belum ada kegiatan</small>'}</div>`}
 async function backup(){const o={};for(const k of ['courses','tasks','deadlines','grades','attendance','payments','memos'])o[k]=(await sb.from(k).select('*')).data;const b=new Blob([JSON.stringify(o,null,1)],{type:'application/json'}),l=document.createElement('a');l.href=URL.createObjectURL(b);l.download='campus-tracker-backup.json';l.click()}
+
+
+/* login, lupa password, real time */
+function loginScreen(){$('#nav').hidden=true;$('#app').innerHTML=`<div class=card style="max-width:380px;margin:40px auto"><h2 style="text-align:center">Campus Tracker</h2><label>Nama kamu (untuk riwayat kegiatan)<input id=an value="${esc(localStorage.actor||'')}" placeholder="mis. Dina"></label><label>Email<input id=em type=email autocomplete=username></label><label>Password<input id=pw type=password autocomplete=current-password></label><div class=row style="margin-top:8px"><button class=pri onclick=doAuth(1)>Masuk</button><button onclick=doAuth(0)>Daftar akun baru</button></div><button class=ic style="margin-top:8px" onclick=forgotPw()>Lupa password?</button></div>`}
+async function doAuth(login){const n=$('#an').value.trim();if(!n)return alert('Isi nama kamu dulu');localStorage.actor=n;const c={email:$('#em').value.trim(),password:$('#pw').value};
+ const{data,error}=await(login?sb.auth.signInWithPassword(c):sb.auth.signUp(c));if(error)return alert(error.message);
+ if(!login&&!data.session)return alert('Akun dibuat, tapi Supabase masih meminta konfirmasi email. Matikan "Confirm email" di Authentication > Sign In / Providers > Email.');location.reload()}
+async function forgotPw(){const e=$('#em').value.trim();if(!e)return alert('Isi emailnya dulu, lalu ketuk Lupa password');const{error}=await sb.auth.resetPasswordForEmail(e,{redirectTo:location.origin+location.pathname});alert(error?error.message:'Link reset password dikirim ke '+e+'. Cek inbox dan folder spam, lalu buka linknya di HP ini.')}
+function recScreen(){$('#nav').hidden=true;$('#app').innerHTML=`<div class=card style="max-width:380px;margin:40px auto"><h2>Password baru</h2><input id=np type=password placeholder="Password baru (min 8)"><input id=np2 type=password placeholder="Ulangi password baru"><button class=pri onclick=setPw()>Simpan</button></div>`}
+async function setPw(){const p=$('#np').value;if(p.length<8)return alert('Minimal 8 karakter');if(p!=$('#np2').value)return alert('Kedua password tidak sama');const{error}=await sb.auth.updateUser({password:p});if(error)return alert(error.message);alert('Password berhasil diganti');location.href=location.pathname}
+async function logout(){if(confirm('Keluar dari akun?')){await sb.auth.signOut();location.reload()}}
+let rtd=false,rtt;
+function realtime(){sb.channel('rt').on('postgres_changes',{event:'*',schema:'public'},()=>{clearTimeout(rtt);rtt=setTimeout(()=>{if($('#mod').innerHTML||/INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName||'')){rtd=true;return}render()},500)}).subscribe()}
+addEventListener('focusout',()=>setTimeout(()=>{if(rtd&&!$('#mod').innerHTML&&!/INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName||'')){rtd=false;render()}},400));
 
 /* pengingat */
 const notif=(t,b)=>{if(!('Notification' in window)||Notification.permission!='granted')return toast('Izin notifikasi belum diaktifkan');navigator.serviceWorker.ready.then(r=>r.showNotification(t,{body:b,icon:'icon-192.png',badge:'icon-192.png',vibrate:[200,100,200]}))};
