@@ -59,7 +59,6 @@ textarea{min-height:90px}label{display:block;font-size:13px;color:var(--m);margi
 @media(max-width:600px){.dash .grid{grid-template-columns:1fr 1fr}}
 nav button{text-align:center}
 @media(max-width:899px){nav button:first-child{margin-left:auto}nav button:last-child{margin-right:auto}}
-@media(min-width:900px){body{padding-left:200px}nav{width:200px;align-items:stretch}nav::before{text-align:center;padding:2px 0 16px;font-size:17px}nav button{flex-direction:column;justify-content:center;text-align:center;gap:4px;padding:10px 6px;font-size:12.5px}}
 </style></head><body>
 <main id="app">Memuat…</main><nav id="nav" hidden></nav><div id="mod"></div>
 <script src="config.js"></script>
@@ -202,7 +201,7 @@ async function dash(a){
  <div class=cols><div class=card><h3>Kuliah hari ini</h3>${today.map(x=>`<div class=row><span><b>${x.start_time||''}</b> ${esc(x.name)}</span><small>${esc(x.room||'')}</small></div>`).join('')||'<small>Tidak ada kelas</small>'}</div>
  <div class=card><h3>Tugas belum selesai</h3>${open.slice(0,3).map(x=>`<div class=row><span>${esc(x.title)}</span><small>${fd(x.deadline)}</small></div>`).join('')||'<small>Tidak ada tugas aktif</small>'}</div>
  <div class=card><h3>Deadline terdekat</h3>${near.map(x=>`<div class=row><span>${esc(x.title)}</span><span class="chip ${stat(x)=='Overdue'?'red':''}">${stat(x)}</span></div>`).join('')||'<small>Kosong</small>'}</div>
- </div><div id=mbox></div><p class=sub style="text-align:center">Campus Tracker versi 9</p></div>`;memos($('#mbox'));
+ </div><div id=mbox></div><p class=sub style="text-align:center">Campus Tracker versi 10</p></div>`;memos($('#mbox'));
 }
 async function pgSet(a){const{data:lg}=await sb.from('activity_log').select('*').order('created_at',{ascending:false}).limit(60);
  const TN={courses:'Jadwal',tasks:'Tugas',deadlines:'Deadline',grades:'Nilai',attendance:'Absensi',payments:'Pembayaran',memos:'Memo',vault_items:'Info Akun'},AC={INSERT:'menambah',UPDATE:'mengubah',DELETE:'menghapus'};
