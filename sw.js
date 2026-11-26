@@ -1,5 +1,8 @@
-const C='ct-v6';
-self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(['./','index.html','icon-192.png'])));self.skipWaiting()});
-self.addEventListener('fetch',e=>{if(e.request.method!=='GET'||e.request.url.includes('supabase.co'))return;
-e.respondWith(fetch(e.request).then(r=>{const k=r.clone();caches.open(C).then(c=>c.put(e.request,k));return r}).catch(()=>caches.match(e.request)))});
-self.addEventListener('notificationclick',e=>{e.notification.close();e.waitUntil(clients.matchAll({type:'window'}).then(l=>l.length?l[0].focus():clients.openWindow('./')))});
+const C='ct-v11-1';
+const SHELL=['./','index.html','config.js','offline.js','push.js','push-config.js','manifest.json','icon-192.png','icon-512.png'];
+const CDN='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js';
+self.addEventListener('install',e=>e.waitUntil((async()=>{const c=await caches.open(C);await c.addAll(SHELL);await c.add(CDN);await self.skipWaiting()})()));
+self.addEventListener('activate',e=>e.waitUntil((async()=>{for(const k of await caches.keys())if(k.startsWith('ct-')&&k!==C)await caches.delete(k);await self.clients.claim()})()));
+self.addEventListener('fetch',e=>{const r=e.request,u=new URL(r.url);if(r.method!=='GET'||(u.origin!==self.location.origin&&r.url!==CDN))return;if(r.mode!=='navigate'&&!SHELL.some(p=>new URL(p,self.registration.scope).href===r.url)&&r.url!==CDN)return;e.respondWith((async()=>{const c=await caches.open(C);try{const res=await fetch(r);if(res.ok)await c.put(r,res.clone());return res}catch{ return await c.match(r)||(r.mode==='navigate'?await c.match(new URL('index.html',self.registration.scope).href):undefined)||Response.error()}})())});
+self.addEventListener('push',e=>{let p={};try{p=e.data?.json()||{}}catch{};e.waitUntil(self.registration.showNotification(p.title||'Campus Tracker',{body:p.body||'Ada pengingat baru.',icon:'icon-192.png',badge:'icon-192.png',tag:p.tag||'campus',data:{page:p.page||'dash'}}))});
+self.addEventListener('notificationclick',e=>{e.notification.close();e.waitUntil((async()=>{const u=new URL('./',self.registration.scope);u.searchParams.set('page',e.notification.data?.page||'dash');const l=await clients.matchAll({type:'window',includeUncontrolled:true});const w=l.find(x=>x.url.startsWith(self.registration.scope));if(w){await w.navigate(u.href);return w.focus()}return clients.openWindow(u.href)})())});
