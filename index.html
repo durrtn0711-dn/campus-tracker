@@ -169,10 +169,10 @@ function absSum(rows){const by={};rows.forEach(r=>{const c=by[r.course]??={h:0,t
 
 /* memo berwarna */
 const mt={};
-async function memos(box){const{data}=await sb.from('memos').select('*').order('created_at');
+async function memos(box){const{data,error}=await sb.from('memos').select('*').order('created_at');if(error)alert('Memo gagal dimuat: '+error.message);
  box.innerHTML=`<div class=row><h3>Catatan</h3><button class=pri onclick=addMemo()>${I('plus',18)} Memo</button></div><div class=notes>${(data||[]).map((m,i)=>`<div class=note style="background:${m.color||MC[i%5]}"><textarea placeholder="Tulis memo…" oninput="ms('${m.id}',this)">${esc(m.content)}</textarea><div class=row><span>${MC.map(c=>`<i class=dot style="background:${c}" onclick="mcol('${m.id}','${c}')"></i>`).join('')}</span><button class=ic onclick="mdel('${m.id}')">${I('trash',16)}</button></div><small id=t${m.id}>${fd(m.updated_at)}</small></div>`).join('')}</div>`}
-async function addMemo(){await sb.from('memos').insert({content:'',color:MC[Math.floor(Math.random()*5)]});memos($('#mbox'))}
-const mcol=async(id,c)=>{await sb.from('memos').update({color:c}).eq('id',id);memos($('#mbox'))};
+async function addMemo(){let r=await sb.from('memos').insert({content:'',color:MC[Math.floor(Math.random()*5)]});if(r.error&&/color/i.test(r.error.message))r=await sb.from('memos').insert({content:''});if(r.error)return alert('Gagal menambah memo: '+r.error.message);memos($('#mbox'))}
+const mcol=async(id,c)=>{const r=await sb.from('memos').update({color:c}).eq('id',id);if(r.error)return alert('Warna gagal disimpan. Jalankan update1.sql di Supabase. '+r.error.message);memos($('#mbox'))};
 const mdel=async id=>{if(confirm('Hapus memo?')){await sb.from('memos').delete().eq('id',id);memos($('#mbox'))}};
 function ms(id,el){$('#t'+id).textContent='menyimpan…';clearTimeout(mt[id]);mt[id]=setTimeout(async()=>{const u=new Date().toISOString();await sb.from('memos').update({content:el.value,updated_at:u}).eq('id',id);$('#t'+id).textContent=fd(u)},700)}
 
