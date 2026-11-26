@@ -1,2 +1,1 @@
-// Isi HANYA public VAPID key dari langkah README. Jangan masukkan private key.
-const CT_VAPID_PUBLIC='';
+const CT_VAPID_PUBLIC='BOG54LcnaqfV6hg35i7QdlKloeEbUPcr5ILwJ9HfDYu_Hg_ia4G3tLfEwAlWjJC85AKPU5RMkOSAyDnvuttaPQI';
